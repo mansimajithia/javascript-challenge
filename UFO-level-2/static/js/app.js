@@ -8,31 +8,42 @@ var tbody = d3.select("tbody");
 console.log(tableData);
 
 // Use d3 to update each cell's text with column values
-data.forEach(function(ufoSightings) {
+data.forEach(function (ufoSightings) {
     console.log(ufoSightings);
     var row = tbody.append("tr");
-    Object.entries(ufoSightings).forEach(function([key, value]) {
-      console.log(key, value);
-      // Append a cell to the row for each value
-      var cell = row.append("td");
-      cell.text(value);
+    Object.entries(ufoSightings).forEach(function ([key, value]) {
+        console.log(key, value);
+        // Append a cell to the row for each value
+        var cell = row.append("td");
+        cell.text(value);
     });
-  });
-  
+});
+
 
 
 // grab references to the button element 
-var button =d3.select("#filter-btn");
+var button = d3.select("#filter-btn");
 
 filteredData = tableData
 
+// Create function to clear input value in the future
+function clear() {
+    // Clear the inputValue
+    d3.select("#datetime").property("value", "")
+    d3.select("#city").property("value", "")
+    d3.select("#state").property("value", "")
+    d3.select("#country").property("value", "")
+    d3.select("#shape").property("value", "")
+
+};
+
 // Submit Button handler
 function handleSubmit() {
-// button.on("click", handleClick); {
+    // button.on("click", handleClick); {
     console.log("Hey! I'm inside the function")
     // Prevent the page from refreshing
     d3.event.preventDefault();
-  
+
     // Select the input value from the form
     var dateInput = d3.select("#datetime").property("value");
     var cityInput = d3.select("#city").property("value");
@@ -42,43 +53,38 @@ function handleSubmit() {
 
     console.log(dateInput)
 
-    // Clear the inputValue
-    d3.select("#datetime").property("value", "")
-    d3.select("#city").property("value", "")
-    d3.select("#state").property("value", "")
-    d3.select("#country").property("value", "")
-    d3.select("#shape").property("value", "")
-    console.log("Everything is cleared out")
-
     // Check to see if any input in any boxes
-    if (dateInput != ""){
+    if (dateInput != "") {
         filteredData = filteredData.filter(data => data.datetime === dateInput);
     }
-    if (cityInput != ""){
+    if (cityInput != "") {
         filteredData = filteredData.filter(data => data.city === cityInput);
     }
-    if (stateInput != ""){
+    if (stateInput != "") {
         filteredData = filteredData.filter(data => data.state === stateInput);
     }
-    if (countryInput != ""){
+    if (countryInput != "") {
         filteredData = filteredData.filter(data => data.country === countryInput);
     }
-    if (shapeInput != ""){
-        filteredData = filteredData.filter(data => data.shape === shapeInput);
+    if (shapeInput != "") {
+        ilteredData = filteredData.filter(data => data.shape === shapeInput);
     }
 
     // Clear out tbody
     tbody.html("")
     console.log("Tbody is cleared out")
-
+    console.log(filteredData)
     // Append filtered data to tbody
-    filteredData.forEach(function(ufoSightings) {
+    filteredData.forEach(function (ufoSightings) {
         var row = tbody.append("tr");
-        Object.entries(ufoSightings).forEach(function([key, value]) {
-        var cell = row.append("td");
-        cell.text(value);
+        Object.entries(ufoSightings).forEach(function ([key, value]) {
+            var cell = row.append("td");
+            cell.text(value);
+        });
     });
-});
 
+    // Call clear function to clear input value
+    clear()
 
-d3.select("#filter-btn").on("click", handleSubmit)}; 
+};
+d3.select("#filter-btn").on("click", handleSubmit)
